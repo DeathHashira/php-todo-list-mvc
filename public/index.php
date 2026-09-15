@@ -26,8 +26,19 @@ Router::get('/register', function() use ($blade) {
 });
 
 Router::post('/register', function() {
+    $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_SPECIAL_CHARS);
+    $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_SPECIAL_CHARS);
+    $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
+    $confpassword = filter_input(INPUT_POST, "confirm_password", FILTER_SANITIZE_SPECIAL_CHARS);
+
+    if ($confpassword != $password) {
+        header("Location: /register");exit;
+    }
+    
     unset($_POST['confirm_password']);
-    (new RegisterController())->register($_POST);
+    (new RegisterController())->register(["email" => $email,
+                                        "password" => $password,
+                                        "username" => $username]);
 });
 
 Router::get('/todos', function() use ($blade) {
@@ -61,7 +72,10 @@ Router::get('/login', function() use ($blade) {
 });
 
 Router::post('/login', function() {
-    (new LoginController)->checkLogin($_POST["email"], $_POST["password"]);
+    $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_SPECIAL_CHARS);
+    $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_SPECIAL_CHARS);
+
+    (new LoginController)->checkLogin($email, $password);
 });
 
 Router::run();
