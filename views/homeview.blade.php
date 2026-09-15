@@ -10,6 +10,10 @@
 
 <body>
     <div>
+        <form method="get" action="/todos/logout">
+            <button type="submit" >Log Out</button>
+        </form>
+        <br>
         <form method="get" action="/todos/update">
             <input type="text" name="newtask">
             <button type="submit" >Update list</button>

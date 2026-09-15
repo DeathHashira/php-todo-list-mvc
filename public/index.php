@@ -51,6 +51,11 @@ Router::get('/todos/updatestatus', function() {
     header("Location: /todos");
 });
 
+Router::get('/todos/logout', function() {
+    session_unset();
+    header("Location: /login");
+});
+
 Router::get('/login', function() use ($blade) {
     echo $blade->run('loginview');
 });
