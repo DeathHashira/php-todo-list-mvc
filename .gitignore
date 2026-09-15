@@ -1,0 +1,14 @@
+/vendor/
+
+.env
+.env.*
+!.env.example
+
+cache/
+.cache/
+tmp/
+temp/
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json

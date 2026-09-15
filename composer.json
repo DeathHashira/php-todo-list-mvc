@@ -1,0 +1,23 @@
+{
+    "name": "hashira/todo-list",
+    "description": "A todo list webapp written in PHP.",
+    "require": {
+        "vlucas/phpdotenv": "^5.7",
+        "respect/validation": "^2.5",
+        "eftec/bladeone": "^4.19"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Src\\": "src/",
+            "Model\\": "model/",
+            "Controller\\": "controller/"
+        }
+    },
+    "authors": [
+        {
+            "name": "DeathHashira",
+            "email": "shabanid.zahra@gmail.com"
+        }
+    ]
+}
