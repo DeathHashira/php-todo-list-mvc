@@ -1,10 +1,13 @@
 <?php
 
-use Model\DataBase;
-use Src\Migration;
+require_once __DIR__ . '/../vendor/autoload.php';
 
-class MigrationCreateUsersTable extends Migration {
-    public function up(DataBase $db) {
+use Src\Migration;
+use Model\DataBase;
+
+return new class extends Migration {
+    public function up(DataBase $db) : void 
+    {
         $conn = $db->getConnection();
 
         $conn->exec("CREATE TABLE users (
@@ -16,9 +19,9 @@ class MigrationCreateUsersTable extends Migration {
         )");
     }
 
-    public function down(DataBase $db) {
+    public function down(DataBase $db) : void 
+    {
         $conn = $db->getConnection();
-
         $conn->exec("DROP TABLE IF EXISTS users");
     }
-}
+};

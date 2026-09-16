@@ -1,10 +1,13 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use Src\Migration;
 use Model\DataBase;
 
-class MigrationCreateTodosTable extends Migration {
-    public function up(DataBase $db) {
+return new class extends Migration {
+    public function up(DataBase $db) : void 
+    {
         $conn = $db->getConnection();
         $conn->exec("CREATE TABLE todos (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -16,8 +19,9 @@ class MigrationCreateTodosTable extends Migration {
         )");
     }
 
-    public function down(DataBase $db) {
+    public function down(DataBase $db) : void 
+    {
         $conn = $db->getConnection();
         $conn->exec("DROP TABLE IF EXISTS todos");
     }
-}
+};
