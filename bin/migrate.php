@@ -5,6 +5,7 @@
  * commands of init, generate, migrate, and rollback
  */
 require_once __DIR__ . "/../vendor/autoload.php";
+
 use Src\MigrationRepository;
 use Src\MigrationRunner;
 
@@ -14,9 +15,9 @@ use Src\MigrationRunner;
  */
 if ($argv[1] === "generate") {
     $classArray = explode('-', $argv[2]);
-    $classArray = array_map(function($str) {
-                            return ucfirst($str);
-                }, $classArray);
+    $classArray = array_map(function ($str) {
+        return ucfirst($str);
+    }, $classArray);
 }
 
 switch ($argv[1]) {
@@ -31,7 +32,7 @@ switch ($argv[1]) {
             echo "Initialization failed.";
         }
         break;
-    
+
     /**
      * Create each migration PHP file
      */
@@ -39,8 +40,8 @@ switch ($argv[1]) {
         $migrationName = $argv[2];
         $timestamp = date('YmdHis');
         $className = 'Migration' . $timestamp . implode('', $classArray);
-        $fileName = __DIR__ . '/../migrations/' 
-                            . $className . '.php';
+        $fileName = __DIR__ . '/../migrations/'
+            . $className . '.php';
 
         $template = "<?php\n\n";
         $template .= "require_once __DIR__ . '/../vendor/autoload.php';\n\n";

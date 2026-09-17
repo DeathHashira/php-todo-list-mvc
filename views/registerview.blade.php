@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    
+
     <form action="/register" method="POST">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username" required />
@@ -25,7 +25,7 @@
         <br />
         <br>
         <button type="submit">Register</button>
-        <button type="button" onclick="window.location.href='/login'" >Go to login</button>
+        <button type="button" onclick="window.location.href='/login'">Go to login</button>
     </form>
 
 </body>

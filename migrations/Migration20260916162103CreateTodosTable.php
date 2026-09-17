@@ -6,7 +6,7 @@ use Src\Migration;
 use Model\DataBase;
 
 return new class extends Migration {
-    public function up(DataBase $db) : void 
+    public function up(DataBase $db): void
     {
         $conn = $db->getConnection();
         $conn->exec("CREATE TABLE todos (
@@ -19,7 +19,7 @@ return new class extends Migration {
         )");
     }
 
-    public function down(DataBase $db) : void 
+    public function down(DataBase $db): void
     {
         $conn = $db->getConnection();
         $conn->exec("DROP TABLE IF EXISTS todos");

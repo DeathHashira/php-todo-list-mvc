@@ -1,6 +1,9 @@
-<?php namespace Controller;
+<?php
+
+namespace Controller;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+
 use Model\Users;
 
 class RegisterController
@@ -12,7 +15,7 @@ class RegisterController
      * @param array $data
      * @return boolean
      */
-    public function register(array $data) : bool
+    public function register(array $data): bool
     {
         if (array_key_exists("password", $data)) {
             $data["password"] = password_hash($data["password"], PASSWORD_DEFAULT);

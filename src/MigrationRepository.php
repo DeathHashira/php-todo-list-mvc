@@ -1,13 +1,17 @@
-<?php namespace Src;
+<?php
+
+namespace Src;
 
 require_once __DIR__ . "/../vendor/autoload.php";
+
 use Model\DataBase;
 use PDO;
 
 /**
  * CRUD implementation specifically for migrations table 
  */
-class MigrationRepository {
+class MigrationRepository
+{
     public $conn;
 
     public function __construct()
@@ -20,7 +24,7 @@ class MigrationRepository {
      *
      * @return boolean
      */
-    public function initMigrations() : bool 
+    public function initMigrations(): bool
     {
         return !$this->conn->exec("CREATE TABLE migrations (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,7 +41,7 @@ class MigrationRepository {
      * @param integer $batch
      * @return boolean
      */
-    public function addMigration(string $migration, int $batch) : bool
+    public function addMigration(string $migration, int $batch): bool
     {
         $statement = $this->conn->prepare("INSERT INTO migrations (migrate, batch) 
                                                                 VALUES (?, ?)");
@@ -49,7 +53,7 @@ class MigrationRepository {
      *
      * @return integer|null
      */
-    public function getLastBatch() : ?int
+    public function getLastBatch(): ?int
     {
         $statement = $this->conn->prepare("SELECT MAX(batch) AS batch FROM migrations");
         $statement->execute();
@@ -61,7 +65,7 @@ class MigrationRepository {
      *
      * @return array
      */
-    public function getLastBatchMigrations() : array
+    public function getLastBatchMigrations(): array
     {
         $statement = $this->conn->prepare("SELECT migrate FROM migrations WHERE batch = (
                                                                                 SELECT MAX(batch)
@@ -76,7 +80,7 @@ class MigrationRepository {
      * @param string $migration
      * @return void
      */
-    public function deleteMigration(string $migration) : void
+    public function deleteMigration(string $migration): void
     {
         $statement = $this->conn->prepare("DELETE FROM migrations WHERE migrate = ?");
         $statement->execute([$migration]);
@@ -88,7 +92,7 @@ class MigrationRepository {
      * @param string $migrate
      * @return boolean
      */
-    public function isMigrateAdded(string $migrate) : bool
+    public function isMigrateAdded(string $migrate): bool
     {
         $statement = $this->conn->prepare("SELECT COUNT(*) FROM migrations WHERE migrate = ?");
         $statement->execute([$migrate]);

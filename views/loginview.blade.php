@@ -18,6 +18,6 @@
         <br />
         <br>
         <button type="submit">Login</button>
-        <button type="button" onclick="window.location.href='/register'" >Go to registery</button>
+        <button type="button" onclick="window.location.href='/register'">Go to registery</button>
     </form>
 </body>

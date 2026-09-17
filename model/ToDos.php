@@ -1,14 +1,19 @@
-<?php namespace Model;
+<?php
+
+namespace Model;
 
 use Override;
 
 /**
  * Extended class of database for todos table
  */
-class ToDos extends DataBase {
+
+class ToDos extends DataBase
+{
     protected string $table_name = 'todos';
 
-    public function getTableName() {
+    public function getTableName()
+    {
         return $this->table_name;
     }
 

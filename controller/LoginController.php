@@ -1,4 +1,6 @@
-<?php namespace Controller;
+<?php
+
+namespace Controller;
 
 use Model\Users;
 use Src\Sessions;
@@ -13,10 +15,10 @@ class LoginController
      * @param string $password
      * @return void
      */
-    public function checkLogin(string $email, string $password) : void
+    public function checkLogin(string $email, string $password): void
     {
         $userInfo = (new Users())->read(['password', 'id'], ['email' => $email]);
-        
+
         if (empty($userInfo)) {
             header('Location: /login');
             return;

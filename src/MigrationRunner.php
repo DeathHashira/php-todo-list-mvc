@@ -1,10 +1,14 @@
-<?php namespace Src;
+<?php
+
+namespace Src;
 
 require_once __DIR__ . "/../vendor/autoload.php";
+
 use Src\MigrationRepository;
 use Model\DataBase;
 
-class MigrationRunner {
+class MigrationRunner
+{
     public MigrationRepository $migrateRepo;
 
     public function __construct(MigrationRepository $migrateRepo)
@@ -33,7 +37,7 @@ class MigrationRunner {
 
             $migration = require $migrate;
             $migration->up(new DataBase());
-            
+
             $this->migrateRepo->addMigration($migrateName, $newBatch);
             echo "Migrated: {$migrateName}\n";
         }
@@ -64,12 +68,12 @@ class MigrationRunner {
      *
      * @return integer
      */
-    private function getPreBatch() : int
+    private function getPreBatch(): int
     {
         $preBatch = $this->migrateRepo->getLastBatch();
         if (!isset($preBatch)) {
             return 0;
-        } 
+        }
         return $preBatch;
     }
 }

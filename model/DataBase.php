@@ -1,4 +1,6 @@
-<?php namespace Model;
+<?php
+
+namespace Model;
 
 use PDO;
 use PDOStatement;
@@ -7,9 +9,11 @@ use Dotenv\Dotenv;
 /**
  * Simple CRUD impelementation for database access
  */
-class DataBase {
+class DataBase
+{
     private $conn;
     private string $host_name;
+    private string $port;
     private string $db_name;
     private string $username;
     private string $password;
@@ -18,19 +22,22 @@ class DataBase {
     /**
      * Connect to database
      */
-    public function __construct() {
+    public function __construct()
+    {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
         $dotenv->load();
 
         $this->host_name = $_ENV['DB_HOST'];
+        $this->port = $_ENV['DB_PORT'];
         $this->db_name = $_ENV['DB_NAME'];
         $this->username = $_ENV['DB_USERNAME'];
         $this->password = $_ENV['DB_PASSWORD'];
 
-        $this->conn = new PDO("mysql:host={$this->host_name};dbname={$this->db_name}", $this->username, $this->password);
+        $this->conn = new PDO("mysql:host={$this->host_name};port={$this->port};dbname={$this->db_name}", $this->username, $this->password);
     }
 
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->conn;
     }
 
@@ -48,13 +55,15 @@ class DataBase {
      * @param array $data
      * @return boolean
      */
-    public function create(array $data) : bool 
+    public function create(array $data): bool
     {
         $columns = implode(', ', array_keys($data));
-        $values = implode(', ', array_map(function($key) { return ':' . $key; }, array_keys($data)));
+        $values = implode(', ', array_map(function ($key) {
+            return ':' . $key;
+        }, array_keys($data)));
         $statement = $this->conn->prepare("INSERT INTO $this->table_name ($columns) VALUES ($values)");
         $this->bindValues($statement, $data);
-        
+
         return !$statement->execute();
     }
 
@@ -64,7 +73,7 @@ class DataBase {
      * @param integer $id
      * @return boolean
      */
-    public function delete(int $id) : bool 
+    public function delete(int $id): bool
     {
         $statement = $this->conn->prepare("DELETE FROM $this->table_name WHERE id = :id");
         $statement->bindValue(':id', $id);
@@ -78,7 +87,7 @@ class DataBase {
      * @param array $data
      * @return boolean
      */
-    public function update(int $id, array $data) : bool 
+    public function update(int $id, array $data): bool
     {
         $set = '';
         foreach ($data as $key => $value) {
@@ -87,7 +96,7 @@ class DataBase {
         $set = rtrim($set, ', ');
 
         $statement = $this->conn->prepare("UPDATE $this->table_name SET $set WHERE id = :id");
-        
+
         $statement->bindValue(':id', $id);
         $this->bindValues($statement, $data);
         return !$statement->execute();
@@ -100,14 +109,14 @@ class DataBase {
      * @param array $conditions -> Conditions for returning results
      * @return array
      */
-    public function read(array $wanteds, array $conditions = []) : array 
+    public function read(array $wanteds, array $conditions = []): array
     {
         if (!empty($conditions)) {
             $where = $this->whereConditions($conditions);
         } else {
             $where = '';
         }
-        
+
         $wanted = implode(', ', $wanteds);
         $statement = $this->conn->prepare("SELECT $wanted FROM $this->table_name $where");
         $this->bindValues($statement, $conditions);
@@ -123,7 +132,7 @@ class DataBase {
      * @param array $data
      * @return void
      */
-    private function bindValues(PDOStatement $statement, array $data) : void 
+    private function bindValues(PDOStatement $statement, array $data): void
     {
         foreach ($data as $key => $value) {
             $statement->bindValue(":" . $key, $value);
@@ -136,14 +145,14 @@ class DataBase {
      * @param array $conditions
      * @return string
      */
-    private function whereConditions(array $conditions) : string 
+    private function whereConditions(array $conditions): string
     {
         $where = '';
-            $where = 'WHERE ';
-            foreach ($conditions as $key => $value) {
-                $where .= "$key = :$key AND ";
-            }
-            $where = rtrim($where, ' AND ');
+        $where = 'WHERE ';
+        foreach ($conditions as $key => $value) {
+            $where .= "$key = :$key AND ";
+        }
+        $where = rtrim($where, ' AND ');
         return $where;
     }
 }
