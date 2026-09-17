@@ -5,6 +5,14 @@ use Src\Sessions;
 
 class LoginController
 {
+    /**
+     * Check if user email and password is okay
+     * If okay, user redirects to main page, if no stays on login page
+     *
+     * @param string $email
+     * @param string $password
+     * @return void
+     */
     public function checkLogin(string $email, string $password) : void
     {
         $userInfo = (new Users())->read(['password', 'id'], ['email' => $email]);

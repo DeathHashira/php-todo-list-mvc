@@ -4,6 +4,9 @@ use PDO;
 use PDOStatement;
 use Dotenv\Dotenv;
 
+/**
+ * Simple CRUD impelementation for database access
+ */
 class DataBase {
     private $conn;
     private string $host_name;
@@ -12,6 +15,9 @@ class DataBase {
     private string $password;
     protected string $table_name;
 
+    /**
+     * Connect to database
+     */
     public function __construct() {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
         $dotenv->load();
@@ -28,11 +34,20 @@ class DataBase {
         return $this->conn;
     }
 
+    /**
+     * Disconnect when work is done
+     */
     public function __destruct()
     {
         $this->conn = null;
     }
 
+    /**
+     * Insert data into each table
+     *
+     * @param array $data
+     * @return boolean
+     */
     public function create(array $data) : bool 
     {
         $columns = implode(', ', array_keys($data));
@@ -40,16 +55,29 @@ class DataBase {
         $statement = $this->conn->prepare("INSERT INTO $this->table_name ($columns) VALUES ($values)");
         $this->bindValues($statement, $data);
         
-        return $statement->execute();
+        return !$statement->execute();
     }
 
+    /**
+     * Delete specific data from each table
+     *
+     * @param integer $id
+     * @return boolean
+     */
     public function delete(int $id) : bool 
     {
         $statement = $this->conn->prepare("DELETE FROM $this->table_name WHERE id = :id");
         $statement->bindValue(':id', $id);
-        return $statement->execute();
+        return !$statement->execute();
     }
 
+    /**
+     * Update specific data
+     *
+     * @param integer $id
+     * @param array $data
+     * @return boolean
+     */
     public function update(int $id, array $data) : bool 
     {
         $set = '';
@@ -62,9 +90,16 @@ class DataBase {
         
         $statement->bindValue(':id', $id);
         $this->bindValues($statement, $data);
-        return $statement->execute();
+        return !$statement->execute();
     }
 
+    /**
+     * Read specific data from table
+     *
+     * @param array $wanteds -> What you want to read
+     * @param array $conditions -> Conditions for returning results
+     * @return array
+     */
     public function read(array $wanteds, array $conditions = []) : array 
     {
         if (!empty($conditions)) {
@@ -81,6 +116,13 @@ class DataBase {
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Helper function to bind each key value into query
+     *
+     * @param PDOStatement $statement
+     * @param array $data
+     * @return void
+     */
     private function bindValues(PDOStatement $statement, array $data) : void 
     {
         foreach ($data as $key => $value) {
@@ -88,6 +130,12 @@ class DataBase {
         }
     }
 
+    /**
+     * Helper function to add conditions to query
+     *
+     * @param array $conditions
+     * @return string
+     */
     private function whereConditions(array $conditions) : string 
     {
         $where = '';

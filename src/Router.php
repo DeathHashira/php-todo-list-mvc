@@ -1,5 +1,9 @@
 <?php namespace Src;
 
+/**
+ * Simple implementation of Router
+ * save each path and handler function for each method
+ */
 class Router {
 
     private static $routes = [
@@ -23,6 +27,12 @@ class Router {
         self::$routes['post'][$route] = $callback;
     }
 
+    /**
+     * Find the specific handler for method and path
+     * and invoke it
+     *
+     * @return void
+     */
     public static function run() {
         $callable = Router::$routes[Router::getMethod()][Router::getPath()];
         $callable();

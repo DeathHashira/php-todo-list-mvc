@@ -5,19 +5,18 @@ use Model\ToDos;
 
 class HomeController
 {
-    private $validation;
-
-    public function __construct()
-    {
-        $this->validation = new \Respect\Validation\Validator();
-    }
-
+    /**
+     * Return all tasks for specific user
+     */
     public function returnList(int $userId) : array 
     {
         $todos = (new Todos())->read(['title', 'status', 'id'], ['user_id' => $userId]);
         return $todos;
     }
 
+    /**
+     * Update status of specific task
+     */
     public function updateTodo(int $todoId) : bool
     {
         $data = [
@@ -27,6 +26,9 @@ class HomeController
         return (new ToDos())->update($todoId, $data);
     }
 
+    /**
+     * Create new task for specific user
+     */
     public function addTodo(int $userId, string $title) : bool 
     {
         $data = [
@@ -36,6 +38,9 @@ class HomeController
         return (new Todos())->create($data);
     }
 
+    /**
+     * Delete specific task
+     */
     public function deleteTodo(int $todoId) : bool 
     {
         return (new Todos())->delete($todoId);

@@ -2,6 +2,9 @@
 
 use Override;
 
+/**
+ * Extended class of database for todos table
+ */
 class ToDos extends DataBase {
     protected string $table_name = 'todos';
 

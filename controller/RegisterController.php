@@ -5,6 +5,13 @@ use Model\Users;
 
 class RegisterController
 {
+    /**
+     * Register new user
+     * If okay user redirects to main page, if not stays on registery page
+     *
+     * @param array $data
+     * @return boolean
+     */
     public function register(array $data) : bool
     {
         if (array_key_exists("password", $data)) {

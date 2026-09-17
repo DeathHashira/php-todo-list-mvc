@@ -1,9 +1,17 @@
 <?php
 
+/**
+ * This file is for migrations commands with simple 
+ * commands of init, generate, migrate, and rollback
+ */
 require_once __DIR__ . "/../vendor/autoload.php";
 use Src\MigrationRepository;
 use Src\MigrationRunner;
 
+
+/**
+ * Create file and class name of each migration
+ */
 if ($argv[1] === "generate") {
     $classArray = explode('-', $argv[2]);
     $classArray = array_map(function($str) {
@@ -12,15 +20,21 @@ if ($argv[1] === "generate") {
 }
 
 switch ($argv[1]) {
+    /**
+     * Initialize migrations table
+     */
     case 'init':
         $initMigrations = (new MigrationRepository())->initMigrations();
-        if (!$initMigrations) {
+        if ($initMigrations) {
             echo "Initilization successful.";
         } else {
             echo "Initialization failed.";
         }
         break;
-
+    
+    /**
+     * Create each migration PHP file
+     */
     case 'generate':
         $migrationName = $argv[2];
         $timestamp = date('YmdHis');

@@ -12,6 +12,12 @@ class MigrationRunner {
         $this->migrateRepo = $migrateRepo;
     }
 
+    /**
+     * Get the last batch implemented migrations
+     * and implement not migrated ones on new batch
+     *
+     * @return void
+     */
     public function migrate()
     {
         $migrates = glob(__DIR__ . "/../migrations/*.php");
@@ -33,6 +39,11 @@ class MigrationRunner {
         }
     }
 
+    /**
+     * Get the migrations implemented on last batch and roll them back
+     *
+     * @return void
+     */
     public function rollback()
     {
         $lastMigrations = $this->migrateRepo->getLastBatchMigrations();
@@ -48,6 +59,11 @@ class MigrationRunner {
         }
     }
 
+    /**
+     * Helper function to get last batch number
+     *
+     * @return integer
+     */
     private function getPreBatch() : int
     {
         $preBatch = $this->migrateRepo->getLastBatch();

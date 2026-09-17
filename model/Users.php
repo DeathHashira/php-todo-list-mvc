@@ -2,6 +2,9 @@
 
 use Override;
 
+/**
+ * Extended class of database for users table
+ */
 class Users extends DataBase {
     public function __construct() {
         parent::__construct();
